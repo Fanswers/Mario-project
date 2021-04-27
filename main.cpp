@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 
 #include <QApplication>
-#include <myScene.h>
+#include <myscene.h>
 
 int main(int argc, char *argv[])
 {
