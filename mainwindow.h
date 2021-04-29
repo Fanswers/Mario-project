@@ -2,6 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QResizeEvent>
+#include <QDebug>
+#include <QTimer>
+#include <QShortcut>
+
+#include "myscene.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,5 +23,16 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    // scène principale
+    MyScene* myScene;
+
+    // redimensionnements
+    void resize();
+    void resizeEvent(QResizeEvent*) override;
+
+private slots:
+    void afterLoad();
+    void escapeAction();
 };
 #endif // MAINWINDOW_H
