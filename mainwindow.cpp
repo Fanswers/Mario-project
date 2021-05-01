@@ -11,6 +11,10 @@ MainWindow::MainWindow(QWidget *parent)
     QShortcut* escape = new QShortcut(Qt::Key::Key_Escape, this);
     connect(escape, SIGNAL(activated()), this, SLOT(escapeAction()));
 
+    // raccourci clavier start/pause
+    QShortcut* space = new QShortcut(Qt::Key::Key_Space, this);
+    connect(space, SIGNAL(activated()), this, SLOT(spaceAction()));
+
     // initialisation de la scene
     myScene = new MyScene();
     ui->graphicsView->setScene(myScene);
@@ -54,4 +58,8 @@ void MainWindow::afterLoad() {
 
 void MainWindow::escapeAction(){
     QApplication::quit();
+}
+
+void MainWindow::spaceAction(){
+    myScene->startPause();
 }

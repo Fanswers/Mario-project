@@ -34,5 +34,6 @@ private:
 private slots:
     void afterLoad();
     void escapeAction();
+    void spaceAction();
 };
 #endif // MAINWINDOW_H
