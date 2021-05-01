@@ -38,6 +38,8 @@ private:
 
     void display();
 
+    void destroy();
+
     // est-on en train de se déplacer ?
     bool isTowardLeft;
     bool isTowardRight;

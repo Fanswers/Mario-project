@@ -42,6 +42,7 @@ void MyScene::parseCsv()
         while (!file.atEnd()) {
             QByteArray line = file.readLine();
             wordList.append(line.split(',').first());
+            qDebug() << line;
         }
 
         qDebug() << wordList;
@@ -50,13 +51,25 @@ void MyScene::parseCsv()
 // créer les tuiles
 void MyScene::display()
 {
-    for (int i = 0; i < 1; i++) {
-        for (int j = 0; j < 1; j++) {
+    for (int i = 0; i < 30; i++) {
+        for (int j = 0; j < 15; j++) {
             objRect = new QGraphicsRectItem();
-            objRect -> setBrush(QBrush(QColor(i+j,0,0)));
+            objRect -> setBrush(QBrush(QColor(0+((i+j)*4),0,0)));
             objRect -> setPen(Qt::NoPen);
             this -> addItem(objRect);
             objRect -> setRect((i*objRectWidth)+objRectPos, j*objRectWidth,objRectWidth,objRectHeight);
+        }
+    }
+}
+
+// détruit toutes les tuiles présentes
+void MyScene::destroy(){
+    QList<QGraphicsItem*> all = items();
+    for (int i = 0; i < all.size(); i++)
+    {
+        QGraphicsItem *gi = all[i];
+        if(gi->parentItem()==NULL) {
+            delete gi;
         }
     }
 }
@@ -83,7 +96,7 @@ void MyScene::update()
         objRectPos += dt;
         qDebug() << objRectPos;
     }
-    this->removeItem(objRect);
+    destroy();
     display();
 }
 
