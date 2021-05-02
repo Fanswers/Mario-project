@@ -143,7 +143,7 @@ void MyScene::update()
         saut = true;
         sautDispo = false;
     }
-    if (saut and (sol + marioSaut) > 128)
+    if (saut and (sol + marioSaut) > 96)
     {
         marioSaut -= 1;
         tombe = false;
@@ -154,12 +154,12 @@ void MyScene::update()
         tombe = true;
     }
     //chute
-    if (tombe and (sol + marioSaut) < 192)
+    if (tombe and (sol + marioSaut) < 176)
     {
         marioSaut += 1;
         saut = false;
     }
-    if (sol + marioSaut == 192)
+    if (sol + marioSaut == 176)
     {
         sautDispo = true;
     }
