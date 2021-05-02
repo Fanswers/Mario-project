@@ -51,11 +51,11 @@ void MyScene::display()
     for (int i = 0; i < 15; i++){
         for (int j = -1; j < 31 ; j++) {
             if(map[i][matricePos + j+1] != '0'){
-                objRect = new QGraphicsRectItem();
-                objRect -> setBrush(QBrush(QColor(0+((i)*4),0,0)));
-                objRect -> setPen(Qt::NoPen);
-                this -> addItem(objRect);
-                objRect -> setRect((j*objRectWidth)+(objRectPos/10), i*objRectHeight, objRectHeight,objRectWidth);
+                objPixmap.load("../mario-project/img/tuiletest.png");
+                objPixmap.copy(0, 0, 16, 16);
+                objPixmap.scaled(20,20);
+                objRect = this -> addPixmap(objPixmap);
+                objRect -> setPos((j*objRectWidth)+(objRectPos/10), i*objRectHeight);
             }
         }
     }

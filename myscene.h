@@ -13,6 +13,9 @@
 #include <QImage>
 #include <QFile>
 #include <QStringList>
+#include <QPainter>
+#include <QPixmap>
+#include <QCoreApplication>
 
 class MyScene : public QGraphicsScene
 {
@@ -50,13 +53,14 @@ private:
     bool isTowardRight;
 
     // tuile du niveau
-    QGraphicsRectItem* objRect;
+    QPixmap objPixmap;
+    QGraphicsPixmapItem * objRect;
     qreal objRectWidth = 16;
     qreal objRectHeight = 16;
 
     // timer
     QTimer* timer;
-    int dt = 10;
+    int dt = 5;
 
     // touches gauche et droite
     bool event(QEvent*) override;
