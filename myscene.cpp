@@ -49,10 +49,10 @@ void MyScene::createMap()
 void MyScene::display()
 {
     for (int i = 0; i < 15; i++){
-        for (int j = 0; j < 30 ; j++) {
-            if(map[i][matricePos + j] != '0'){
+        for (int j = -1; j < 31 ; j++) {
+            if(map[i][matricePos + j+1] != '0'){
                 objRect = new QGraphicsRectItem();
-                objRect -> setBrush(QBrush(QColor(0+((i+j)*4),0,0)));
+                objRect -> setBrush(QBrush(QColor(0+((i)*4),0,0)));
                 objRect -> setPen(Qt::NoPen);
                 this -> addItem(objRect);
                 objRect -> setRect((j*objRectWidth)+(objRectPos/10), i*objRectHeight, objRectHeight,objRectWidth);
@@ -97,7 +97,7 @@ void MyScene::update()
         }
         qDebug() << objRectPos;
     }
-    if(isTowardRight && matricePos < mapWidth - 30){
+    if(isTowardRight && matricePos < mapWidth - 32){
         if(objRectPos > -100 && objRectPos <= 0){
             objRectPos -= 10;
         }
