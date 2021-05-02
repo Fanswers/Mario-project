@@ -178,7 +178,7 @@ void MyScene::update()
         tombe = true;
     }
     //chute
-    if (tombe and (sol + marioSaut) < 176 and solSous == false)
+    if (tombe and (sol + marioSaut) < 192 and solSous == false)
     {
         marioSaut += 1;
         saut = false;
