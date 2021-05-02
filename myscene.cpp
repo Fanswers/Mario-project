@@ -1,19 +1,21 @@
 #include "myscene.h"
 
-
 MyScene::MyScene()
 {
     // coordonnées de la scene
-    this -> setSceneRect(0, 0, WIDTH, HEIGHT);
+    this->setSceneRect(0, 0, WIDTH, HEIGHT);
 
     // background
-//    QImage *image = new QImage("../mario-project/img/Map.png");
-//    QBrush *brush = new QBrush(*image);
-//    this -> setBackgroundBrush(*brush);
+
+    fond = QPixmap("../mario-project/img/fond.png");
+    fond = fond.scaled(WIDTH + 2, HEIGHT + 2);
+    QBrush *brush = new QBrush(fond);
+
+    this->setBackgroundBrush(*brush);
 
     // timer
     timer = new QTimer();
-    timer -> setInterval(dt);
+    timer->setInterval(dt);
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 
     init();
@@ -32,113 +34,178 @@ void MyScene::init()
 void MyScene::createMap()
 {
     QFile file("../mario-project/lvl/level1.csv");
-        if (!file.open(QIODevice::ReadOnly)) {
-            qDebug() << file.errorString();
-        }
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << file.errorString();
+    }
 
-        while (!file.atEnd()) {
-            QString line = file.readLine();
-            line.remove("\r\n");
-            line.replace(',', ' ');
-            QTextStream stream(&line);
-            QList<int> array;
-            while(!stream.atEnd()){
-               int number;
-               stream >> number;
-               array.append(number);
-            }
-            map.append(array);
+    while (!file.atEnd())
+    {
+        QString line = file.readLine();
+        line.remove("\r\n");
+        line.replace(',', ' ');
+        QTextStream stream(&line);
+        QList<int> array;
+        while (!stream.atEnd())
+        {
+            int number;
+            stream >> number;
+            array.append(number);
         }
+        map.append(array);
+    }
     mapWidth = map[0].length();
 }
 
-// créer les tuiles
+// créer les tuiles + Mario
 void MyScene::display()
 {
-    for (int i = 0; i < 15; i++){
-        for (int j = -1; j < 31 ; j++) {
-            if(map[i][matricePos + j+1] != -1){
+    for (int i = 0; i < 15; i++)
+    {
+        for (int j = -1; j < 31; j++)
+        {
+            if (map[i][matricePos + j + 1] != -1)
+            {
                 objPixmap.load("../mario-project/img/finalSpriteObject.png");
-                objPixmap = objPixmap.copy(map[i][matricePos + j + 1]*16, 0, 16, 16);
-                objRect = this -> addPixmap(objPixmap);
-                objRect -> setPos((j*objRectWidth)+(objRectPos/10), i*objRectHeight);
+                objPixmap = objPixmap.copy(map[i][matricePos + j + 1] * 16, 0, 16, 16);
+                objRect = this->addPixmap(objPixmap);
+                objRect->setPos((j * objRectWidth) + (objRectPos / 10), i * objRectHeight);
             }
         }
     }
+    imgMario.load("../mario-project/img/tuiletest.png");
+    imgMario.copy(0, 0, 16, 16);
+    imgMario = imgMario.scaled(marioWidth, marioHeight);
+    mario = this->addPixmap(imgMario);
+    mario->setPos(16, sol + marioSaut);
 }
 
 // détruit toutes les tuiles présentes
-void MyScene::destroy(){
-    QList<QGraphicsItem*> all = items();
+void MyScene::destroy()
+{
+    QList<QGraphicsItem *> all = items();
     for (int i = 0; i < all.size(); i++)
     {
         QGraphicsItem *gi = all[i];
-        if(gi->parentItem()==NULL) {
+        if (gi->parentItem() == NULL)
+        {
             delete gi;
         }
     }
 }
 
 // start / pause
-void MyScene::startPause() {
-    if (timer->isActive()) {
+void MyScene::startPause()
+{
+    if (timer->isActive())
+    {
         timer->stop();
     }
-    else {
+    else
+    {
         timer->start();
     }
 }
 
-
 void MyScene::update()
 {
-    qDebug() << "enclanchement";
-    if(isTowardLeft && matricePos > 0){
-        if (objRectPos < 100 && objRectPos >= 0){
+    //qDebug() << "enclanchement";
+    if (isTowardLeft && matricePos > 0)
+    {
+        if (objRectPos < 100 && objRectPos >= 0)
+        {
             objRectPos += 10;
         }
-        else {
+        else
+        {
             objRectPos = 0;
             matricePos -= 1;
         }
         qDebug() << objRectPos;
     }
-    if(isTowardRight && matricePos < mapWidth - 32){
-        if(objRectPos > -100 && objRectPos <= 0){
+    if (isTowardRight && matricePos < mapWidth - 32)
+    {
+        if (objRectPos > -100 && objRectPos <= 0)
+        {
             objRectPos -= 10;
         }
-        else {
+        else
+        {
             objRectPos = 0;
             matricePos += 1;
         }
         qDebug() << objRectPos;
     }
+
+    //action du saut
+    if (isTowardUp and sautDispo)
+    {
+        saut = true;
+        sautDispo = false;
+    }
+    if (saut and (sol + marioSaut) > 96)
+    {
+        marioSaut -= 1;
+        tombe = false;
+        qDebug() << "Je saute";
+    }
+    else
+    {
+        tombe = true;
+    }
+    //chute
+    if (tombe and (sol + marioSaut) < 176)
+    {
+        marioSaut += 1;
+        saut = false;
+    }
+    if (sol + marioSaut == 176)
+    {
+        sautDispo = true;
+    }
     destroy();
     display();
 }
 
-bool MyScene::event(QEvent* event) {
+bool MyScene::event(QEvent *event)
+{
 
-    if (event->type() == QEvent::KeyPress) {
-        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-        if (keyEvent-> key() == Qt::Key_Left) {
-            this -> setIsTowardLeft(true);
+    if (event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        if (keyEvent->key() == Qt::Key_Left)
+        {
+            this->setIsTowardLeft(true);
             qDebug() << "On appuie sur la touche de gauche";
         }
-        else if (keyEvent-> key() == Qt::Key_Right) {
-            this -> setIsTowardRight(true);
+        else if (keyEvent->key() == Qt::Key_Right)
+        {
+            this->setIsTowardRight(true);
+            qDebug() << "On appuie sur la touche de droite";
+        }
+        else if (keyEvent->key() == Qt::Key_Up and saut == false)
+        {
+            this->setIsTowardUp(true);
             qDebug() << "On appuie sur la touche de droite";
         }
         //qDebug() << "touche appuyée";
     }
-    else if (event->type() == QEvent::KeyRelease) {
-        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-        if (keyEvent-> key() == Qt::Key_Left) {
-            this -> setIsTowardLeft(false);
+    else if (event->type() == QEvent::KeyRelease)
+    {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        if (keyEvent->key() == Qt::Key_Left)
+        {
+            this->setIsTowardLeft(false);
             qDebug() << "On relâche sur la touche de gauche";
         }
-        else if (keyEvent-> key() == Qt::Key_Right) {
-            this -> setIsTowardRight(false);
+        else if (keyEvent->key() == Qt::Key_Right)
+        {
+            this->setIsTowardRight(false);
+            qDebug() << "On relâche sur la touche de droite";
+        }
+        else if (keyEvent->key() == Qt::Key_Up)
+        {
+            this->setIsTowardUp(false);
             qDebug() << "On relâche sur la touche de droite";
         }
     }
