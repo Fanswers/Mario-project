@@ -57,10 +57,9 @@ void MyScene::display()
 {
     for (int i = 0; i < 15; i++){
         for (int j = -1; j < 31 ; j++) {
-            if(map[i][matricePos + j+1] != 99){
-                objPixmap.load("../mario-project/img/tuiletest.png");
-                objPixmap.copy(0, 0, 16, 16);
-                objPixmap.scaled(20,20);
+            if(map[i][matricePos + j+1] != -1){
+                objPixmap.load("../mario-project/img/finalSpriteObject.png");
+                objPixmap = objPixmap.copy(map[i][matricePos + j + 1]*16, 0, 16, 16);
                 objRect = this -> addPixmap(objPixmap);
                 objRect -> setPos((j*objRectWidth)+(objRectPos/10), i*objRectHeight);
             }
