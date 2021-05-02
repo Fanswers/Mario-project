@@ -21,8 +21,6 @@ MyScene::MyScene()
 
 void MyScene::init()
 {
-    objRectPos = 0;
-
     isTowardLeft = false;
     isTowardRight = false;
 
@@ -44,18 +42,21 @@ void MyScene::createMap()
             line.remove("\r\n");
             map.append(line);
         }
+    mapWidth = map[0].length();
 }
 
 // créer les tuiles
 void MyScene::display()
 {
-    for (int i = 0; i < 30; i++) {
-        for (int j = 0; j < 15; j++) {
-            objRect = new QGraphicsRectItem();
-            objRect -> setBrush(QBrush(QColor(0+((i+j)*4),0,0)));
-            objRect -> setPen(Qt::NoPen);
-            this -> addItem(objRect);
-            objRect -> setRect((i*objRectWidth)+objRectPos, j*objRectWidth,objRectHeight,objRectWidth);
+    for (int i = 0; i < 15; i++){
+        for (int j = 0; j < 30 ; j++) {
+            if(map[i][matricePos + j] != '0'){
+                objRect = new QGraphicsRectItem();
+                objRect -> setBrush(QBrush(QColor(0+((i+j)*4),0,0)));
+                objRect -> setPen(Qt::NoPen);
+                this -> addItem(objRect);
+                objRect -> setRect((j*objRectWidth)+(objRectPos/10), i*objRectHeight, objRectHeight,objRectWidth);
+            }
         }
     }
 }
@@ -86,12 +87,24 @@ void MyScene::startPause() {
 void MyScene::update()
 {
     qDebug() << "enclanchement";
-    if(isTowardLeft){
-        objRectPos -= dt;
+    if(isTowardLeft && matricePos > 0){
+        if (objRectPos < 100 && objRectPos >= 0){
+            objRectPos += 10;
+        }
+        else {
+            objRectPos = 0;
+            matricePos -= 1;
+        }
         qDebug() << objRectPos;
     }
-    if(isTowardRight){
-        objRectPos += dt;
+    if(isTowardRight && matricePos < mapWidth - 30){
+        if(objRectPos > -100 && objRectPos <= 0){
+            objRectPos -= 10;
+        }
+        else {
+            objRectPos = 0;
+            matricePos += 1;
+        }
         qDebug() << objRectPos;
     }
     destroy();

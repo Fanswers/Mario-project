@@ -30,9 +30,12 @@ private:
     const int WIDTH = 480;
     const int HEIGHT = 240;
 
+    // creation map
     QStringList map;
+    int mapWidth;
 
     signed int objRectPos = 0;
+    int matricePos = 0;
 
     void init();
 
@@ -53,7 +56,7 @@ private:
 
     // timer
     QTimer* timer;
-    int dt = 20;
+    int dt = 10;
 
     // touches gauche et droite
     bool event(QEvent*) override;
