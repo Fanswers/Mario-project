@@ -7,9 +7,12 @@ MyScene::MyScene()
     this -> setSceneRect(0, 0, WIDTH, HEIGHT);
 
     // background
-//    QImage *image = new QImage("../mario-project/img/Map.png");
-//    QBrush *brush = new QBrush(*image);
-//    this -> setBackgroundBrush(*brush);
+
+    fond = QPixmap("../mario-project/img/fond.png");
+    fond = fond.scaled(WIDTH+2,HEIGHT+2);
+    QBrush *brush = new QBrush(fond);
+
+    this -> setBackgroundBrush(*brush);
 
     // timer
     timer = new QTimer();
@@ -43,9 +46,10 @@ void MyScene::createMap()
             map.append(line);
         }
     mapWidth = map[0].length();
+
 }
 
-// créer les tuiles
+// créer les tuiles + Mario
 void MyScene::display()
 {
     for (int i = 0; i < 15; i++){
@@ -53,12 +57,16 @@ void MyScene::display()
             if(map[i][matricePos + j+1] != '0'){
                 objPixmap.load("../mario-project/img/tuiletest.png");
                 objPixmap.copy(0, 0, 16, 16);
-                objPixmap.scaled(20,20);
                 objRect = this -> addPixmap(objPixmap);
                 objRect -> setPos((j*objRectWidth)+(objRectPos/10), i*objRectHeight);
             }
         }
     }
+    imgMario.load("../mario-project/img/tuiletest.png");
+    imgMario.copy(0, 0, 16, 16);
+    imgMario = imgMario.scaled(marioWidth,marioHeight);
+    mario = this -> addPixmap(imgMario);
+    mario -> setPos(16,sol + marioSaut);
 }
 
 // détruit toutes les tuiles présentes
@@ -86,7 +94,7 @@ void MyScene::startPause() {
 
 void MyScene::update()
 {
-    qDebug() << "enclanchement";
+    //qDebug() << "enclanchement";
     if(isTowardLeft && matricePos > 0){
         if (objRectPos < 100 && objRectPos >= 0){
             objRectPos += 10;
@@ -107,6 +115,27 @@ void MyScene::update()
         }
         qDebug() << objRectPos;
     }
+
+    //action du saut
+    if(isTowardUp and sautDispo) {
+        saut = true;
+        sautDispo = false;
+    }
+    if (saut and (sol+marioSaut) > 128) {
+        marioSaut -= 1;
+        tombe = false;
+        qDebug() << "Je saute";
+    } else {
+        tombe = true;
+    }
+    //chute
+    if (tombe and (sol+marioSaut) < 192) {
+        marioSaut += 1;
+        saut = false;
+    }
+    if (sol+marioSaut == 192) {
+        sautDispo = true;
+    }
     destroy();
     display();
 }
@@ -123,6 +152,10 @@ bool MyScene::event(QEvent* event) {
             this -> setIsTowardRight(true);
             qDebug() << "On appuie sur la touche de droite";
         }
+        else if (keyEvent-> key() == Qt::Key_Up and saut == false) {
+            this -> setIsTowardUp(true);
+            qDebug() << "On appuie sur la touche de droite";
+        }
         //qDebug() << "touche appuyée";
     }
     else if (event->type() == QEvent::KeyRelease) {
@@ -133,6 +166,10 @@ bool MyScene::event(QEvent* event) {
         }
         else if (keyEvent-> key() == Qt::Key_Right) {
             this -> setIsTowardRight(false);
+            qDebug() << "On relâche sur la touche de droite";
+        }
+        else if (keyEvent-> key() == Qt::Key_Up) {
+            this -> setIsTowardUp(false);
             qDebug() << "On relâche sur la touche de droite";
         }
     }
