@@ -102,7 +102,13 @@ void MyScene::compare()
     {
         QGraphicsItem *gi = all[i];
         qDebug() << gi->pos();
+        if (gi->pos() == all[1]->pos()) {
+            solSous = true;
+        } else {
+            solSous = false;
+        }
     }
+    qDebug() << all;
 }
 
 // start / pause
@@ -121,12 +127,12 @@ void MyScene::startPause()
 void MyScene::update()
 {
     compare();
-    //qDebug() << "enclanchement";
-    if (isTowardLeft && matricePos > 0)
+    //deplacement decors
+    if (isTowardLeft && matricePos > 0 and isTowardRight == false)
     {
         if (objRectPos < 100 && objRectPos >= 0)
         {
-            objRectPos += 10;
+            objRectPos += 20;
         }
         else
         {
@@ -135,11 +141,11 @@ void MyScene::update()
         }
         qDebug() << objRectPos;
     }
-    if (isTowardRight && matricePos < mapWidth - 32)
+    if (isTowardRight && matricePos < mapWidth - 32 and isTowardLeft == false)
     {
         if (objRectPos > -100 && objRectPos <= 0)
         {
-            objRectPos -= 10;
+            objRectPos -= 20;
         }
         else
         {
@@ -166,7 +172,7 @@ void MyScene::update()
         tombe = true;
     }
     //chute
-    if (tombe and (sol + marioSaut) < 176)
+    if (tombe and (sol + marioSaut) < 176 and solSous == false)
     {
         marioSaut += 1;
         saut = false;
@@ -174,6 +180,7 @@ void MyScene::update()
     if (sol + marioSaut == 176)
     {
         sautDispo = true;
+        solSous = true;
     }
     destroy();
     display();
@@ -181,7 +188,6 @@ void MyScene::update()
 
 bool MyScene::event(QEvent *event)
 {
-
     if (event->type() == QEvent::KeyPress)
     {
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);

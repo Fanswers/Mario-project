@@ -59,6 +59,7 @@ private:
     bool saut = false;
     bool tombe = false;
     bool sautDispo = true;
+    bool solSous = false;
 
     // tuile du niveau
     QPixmap objPixmap;
