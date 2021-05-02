@@ -94,6 +94,17 @@ void MyScene::destroy()
     }
 }
 
+// compare toutes les tuiles présentes
+void MyScene::compare()
+{
+    QList<QGraphicsItem *> all = items();
+    for (int i = 0; i < all.size(); i++)
+    {
+        QGraphicsItem *gi = all[i];
+        qDebug() << gi->pos();
+    }
+}
+
 // start / pause
 void MyScene::startPause()
 {
@@ -109,6 +120,7 @@ void MyScene::startPause()
 
 void MyScene::update()
 {
+    compare();
     //qDebug() << "enclanchement";
     if (isTowardLeft && matricePos > 0)
     {

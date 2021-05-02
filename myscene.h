@@ -50,6 +50,8 @@ private:
 
     void destroy();
 
+    void compare();
+
     // est-on en train de se déplacer ?
     bool isTowardLeft;
     bool isTowardRight;
