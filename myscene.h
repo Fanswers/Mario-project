@@ -71,6 +71,7 @@ private:
     qreal marioWidth = 16;
     qreal marioHeight = 16;
     signed int marioSaut = 0;
+    int marioSprite = 0;
 
 
     // timer

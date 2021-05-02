@@ -74,7 +74,7 @@ void MyScene::display()
         }
     }
     imgMario.load("../mario-project/img/finalSpriteMario.png");
-    imgMario = imgMario.copy(0, 0, 16, 16);
+    imgMario = imgMario.copy(marioSprite * 16, 0, 16, 16);
     imgMario = imgMario.scaled(marioWidth, marioHeight);
     mario = this->addPixmap(imgMario);
     mario->setPos(16, sol + marioSaut);
@@ -148,6 +148,9 @@ void MyScene::update()
         marioSaut -= 1;
         tombe = false;
         qDebug() << "Je saute";
+
+        // changement de l'image
+        marioSprite = 6;
     }
     else
     {
@@ -162,6 +165,9 @@ void MyScene::update()
     if (sol + marioSaut == 192)
     {
         sautDispo = true;
+
+        // changement de l'image
+        marioSprite = 0;
     }
     destroy();
     display();
