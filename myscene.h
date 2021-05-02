@@ -2,8 +2,10 @@
 #define MYSCENE_H
 
 #include <QGraphicsScene>
+#include <QGraphicsView>
 #include <QGraphicsRectItem>
 #include <QGraphicsEllipseItem>
+#include <QGraphicsPixmapItem>
 #include <QBrush>
 #include <QColor>
 #include <QTimer>
@@ -13,6 +15,8 @@
 #include <QImage>
 #include <QFile>
 #include <QStringList>
+#include <QApplication>
+#include <QPainter>
 
 class MyScene : public QGraphicsScene
 {
@@ -24,6 +28,7 @@ public:
 
     void setIsTowardLeft(bool b) {isTowardLeft = b;}
     void setIsTowardRight(bool b) {isTowardRight = b;}
+    void setIsTowardUp(bool b) {isTowardUp = b;}
 
 private:
     // dimension du repère:
@@ -31,6 +36,7 @@ private:
     const int HEIGHT = 240;
 
     signed int objRectPos = 0;
+    signed int marioPos = 0;
 
     void init();
 
@@ -41,12 +47,24 @@ private:
     // est-on en train de se déplacer ?
     bool isTowardLeft;
     bool isTowardRight;
+    bool isTowardUp;
+    bool saut = false;
+    bool chute = false;
 
     // tuile du niveau
     QGraphicsRectItem* objRect;
-    qreal objRectWidth = 16;
-    qreal objRectHeight = 16;
 
+    QPainter fondCube;
+    QImage test;
+    QGraphicsPixmapItem test2;
+    QGraphicsPixmapItem testo;
+    QPixmap test3;
+    qreal objRectWidth = 20;
+    qreal objRectHeight = 20;
+    QGraphicsRectItem* mario;
+    QImage imgMario;
+    qreal marioWidthPos = 180;
+    qreal marioHeightPos = 180;
     // timer
     QTimer* timer;
     int dt = 20;
