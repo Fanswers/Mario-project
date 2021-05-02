@@ -50,6 +50,8 @@ private:
 
     void destroy();
 
+    void compare();
+
     // est-on en train de se déplacer ?
     bool isTowardLeft;
     bool isTowardRight;
@@ -57,6 +59,7 @@ private:
     bool saut = false;
     bool tombe = false;
     bool sautDispo = true;
+    bool solSous = false;
 
     // tuile du niveau
     QPixmap objPixmap;
