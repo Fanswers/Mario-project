@@ -129,7 +129,7 @@ void MyScene::startPause()
 
 void MyScene::update()
 {
-    compare();
+    //compare();
     //deplacement decors
     if (isTowardLeft && matricePos > 0 and isTowardRight == false)
     {
@@ -142,7 +142,6 @@ void MyScene::update()
             objRectPos = 0;
             matricePos -= 1;
         }
-        qDebug() << objRectPos;
     }
     if (isTowardRight && matricePos < mapWidth - 32 and isTowardLeft == false)
     {
@@ -155,7 +154,6 @@ void MyScene::update()
             objRectPos = 0;
             matricePos += 1;
         }
-        qDebug() << objRectPos;
     }
 
     //action du saut
@@ -168,7 +166,6 @@ void MyScene::update()
     {
         marioSaut -= 1;
         tombe = false;
-        qDebug() << "Je saute";
 
         // changement de l'image
         marioSprite = 6;
@@ -178,7 +175,7 @@ void MyScene::update()
         tombe = true;
     }
     //chute
-    if (tombe and (sol + marioSaut) < 192 and solSous == false)
+    if (tombe and (sol + marioSaut) < 192)
     {
         marioSaut += 1;
         saut = false;
@@ -203,19 +200,15 @@ bool MyScene::event(QEvent *event)
         if (keyEvent->key() == Qt::Key_Left)
         {
             this->setIsTowardLeft(true);
-            qDebug() << "On appuie sur la touche de gauche";
         }
         else if (keyEvent->key() == Qt::Key_Right)
         {
             this->setIsTowardRight(true);
-            qDebug() << "On appuie sur la touche de droite";
         }
         else if (keyEvent->key() == Qt::Key_Up and saut == false)
         {
             this->setIsTowardUp(true);
-            qDebug() << "On appuie sur la touche du haut";
         }
-        //qDebug() << "touche appuyée";
     }
     else if (event->type() == QEvent::KeyRelease)
     {
@@ -223,17 +216,14 @@ bool MyScene::event(QEvent *event)
         if (keyEvent->key() == Qt::Key_Left)
         {
             this->setIsTowardLeft(false);
-            qDebug() << "On relâche sur la touche de gauche";
         }
         else if (keyEvent->key() == Qt::Key_Right)
         {
             this->setIsTowardRight(false);
-            qDebug() << "On relâche sur la touche de droite";
         }
         else if (keyEvent->key() == Qt::Key_Up)
         {
             this->setIsTowardUp(false);
-            qDebug() << "On relâche sur la touche du haut";
         }
     }
     return QGraphicsScene::event(event);
