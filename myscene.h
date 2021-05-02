@@ -63,13 +63,13 @@ private:
     QGraphicsPixmapItem * objRect;
     qreal objRectWidth = 16;
     qreal objRectHeight = 16;
-    qreal sol = 172;
+    qreal sol = 192;
 
     // Mario
     QPixmap imgMario;
     QGraphicsPixmapItem* mario;
     qreal marioWidth = 16;
-    qreal marioHeight = 32;
+    qreal marioHeight = 16;
     signed int marioSaut = 0;
 
 
