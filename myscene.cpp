@@ -186,7 +186,7 @@ bool MyScene::event(QEvent *event)
         else if (keyEvent->key() == Qt::Key_Up and saut == false)
         {
             this->setIsTowardUp(true);
-            qDebug() << "On appuie sur la touche de droite";
+            qDebug() << "On appuie sur la touche du haut";
         }
         //qDebug() << "touche appuyée";
     }
@@ -206,7 +206,7 @@ bool MyScene::event(QEvent *event)
         else if (keyEvent->key() == Qt::Key_Up)
         {
             this->setIsTowardUp(false);
-            qDebug() << "On relâche sur la touche de droite";
+            qDebug() << "On relâche sur la touche du haut";
         }
     }
     return QGraphicsScene::event(event);
