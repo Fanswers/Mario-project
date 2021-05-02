@@ -27,6 +27,7 @@ public:
 
     void setIsTowardLeft(bool b) {isTowardLeft = b;}
     void setIsTowardRight(bool b) {isTowardRight = b;}
+    void setIsTowardUp(bool b) {isTowardUp = b;}
 
 private:
     // dimension du repère:
@@ -36,6 +37,7 @@ private:
     // creation map
     QList<QList<int>> map;
     int mapWidth;
+    QPixmap fond;
 
     signed int objRectPos = 0;
     int matricePos = 0;
@@ -51,12 +53,25 @@ private:
     // est-on en train de se déplacer ?
     bool isTowardLeft;
     bool isTowardRight;
+    bool isTowardUp;
+    bool saut = false;
+    bool tombe = false;
+    bool sautDispo = true;
 
     // tuile du niveau
     QPixmap objPixmap;
     QGraphicsPixmapItem * objRect;
     qreal objRectWidth = 16;
     qreal objRectHeight = 16;
+    qreal sol = 192;
+
+    // Mario
+    QPixmap imgMario;
+    QGraphicsPixmapItem* mario;
+    qreal marioWidth = 16;
+    qreal marioHeight = 32;
+    signed int marioSaut = 0;
+
 
     // timer
     QTimer* timer;
