@@ -73,8 +73,8 @@ void MyScene::display()
             }
         }
     }
-    imgMario.load("../mario-project/img/tuiletest.png");
-    imgMario.copy(0, 0, 16, 16);
+    imgMario.load("../mario-project/img/finalSpriteMario.png");
+    imgMario = imgMario.copy(0, 0, 16, 16);
     imgMario = imgMario.scaled(marioWidth, marioHeight);
     mario = this->addPixmap(imgMario);
     mario->setPos(16, sol + marioSaut);
@@ -154,12 +154,12 @@ void MyScene::update()
         tombe = true;
     }
     //chute
-    if (tombe and (sol + marioSaut) < 176)
+    if (tombe and (sol + marioSaut) < 192)
     {
         marioSaut += 1;
         saut = false;
     }
-    if (sol + marioSaut == 176)
+    if (sol + marioSaut == 192)
     {
         sautDispo = true;
     }
