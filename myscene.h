@@ -34,7 +34,7 @@ private:
     const int HEIGHT = 240;
 
     // creation map
-    QStringList map;
+    QList<QList<int>> map;
     int mapWidth;
 
     signed int objRectPos = 0;

@@ -38,9 +38,16 @@ void MyScene::createMap()
 
         while (!file.atEnd()) {
             QString line = file.readLine();
-            line.remove(',');
             line.remove("\r\n");
-            map.append(line);
+            line.replace(',', ' ');
+            QTextStream stream(&line);
+            QList<int> array;
+            while(!stream.atEnd()){
+               int number;
+               stream >> number;
+               array.append(number);
+            }
+            map.append(array);
         }
     mapWidth = map[0].length();
 }
@@ -50,7 +57,7 @@ void MyScene::display()
 {
     for (int i = 0; i < 15; i++){
         for (int j = -1; j < 31 ; j++) {
-            if(map[i][matricePos + j+1] != '0'){
+            if(map[i][matricePos + j+1] != 99){
                 objPixmap.load("../mario-project/img/tuiletest.png");
                 objPixmap.copy(0, 0, 16, 16);
                 objPixmap.scaled(20,20);
