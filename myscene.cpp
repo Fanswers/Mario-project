@@ -94,6 +94,26 @@ void MyScene::destroy()
     }
 }
 
+// compare toutes les tuiles présentes
+void MyScene::compare()
+{
+    QList<QGraphicsItem *> all = items();
+    for (int i = 0; i < all.size(); i++)
+    {
+        QGraphicsItem *gi = all[i];
+        qDebug() << gi->pos();
+        if (gi->pos() == all[1]->pos())
+        {
+            solSous = true;
+        }
+        else
+        {
+            solSous = false;
+        }
+    }
+    qDebug() << all;
+}
+
 // start / pause
 void MyScene::startPause()
 {
@@ -109,32 +129,31 @@ void MyScene::startPause()
 
 void MyScene::update()
 {
-    //qDebug() << "enclanchement";
-    if (isTowardLeft && matricePos > 0)
+    //compare();
+    //deplacement decors
+    if (isTowardLeft && matricePos > 0 and isTowardRight == false)
     {
         if (objRectPos < 100 && objRectPos >= 0)
         {
-            objRectPos += 10;
+            objRectPos += 20;
         }
         else
         {
             objRectPos = 0;
             matricePos -= 1;
         }
-        qDebug() << objRectPos;
     }
-    if (isTowardRight && matricePos < mapWidth - 32)
+    if (isTowardRight && matricePos < mapWidth - 32 and isTowardLeft == false)
     {
         if (objRectPos > -100 && objRectPos <= 0)
         {
-            objRectPos -= 10;
+            objRectPos -= 20;
         }
         else
         {
             objRectPos = 0;
             matricePos += 1;
         }
-        qDebug() << objRectPos;
     }
 
     //action du saut
@@ -147,7 +166,6 @@ void MyScene::update()
     {
         marioSaut -= 1;
         tombe = false;
-        qDebug() << "Je saute";
 
         // changement de l'image
         marioSprite = 6;
@@ -168,6 +186,7 @@ void MyScene::update()
 
         // changement de l'image
         marioSprite = 0;
+        solSous = true;
     }
     destroy();
     display();
@@ -175,26 +194,21 @@ void MyScene::update()
 
 bool MyScene::event(QEvent *event)
 {
-
     if (event->type() == QEvent::KeyPress)
     {
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
         if (keyEvent->key() == Qt::Key_Left)
         {
             this->setIsTowardLeft(true);
-            qDebug() << "On appuie sur la touche de gauche";
         }
         else if (keyEvent->key() == Qt::Key_Right)
         {
             this->setIsTowardRight(true);
-            qDebug() << "On appuie sur la touche de droite";
         }
         else if (keyEvent->key() == Qt::Key_Up and saut == false)
         {
             this->setIsTowardUp(true);
-            qDebug() << "On appuie sur la touche du haut";
         }
-        //qDebug() << "touche appuyée";
     }
     else if (event->type() == QEvent::KeyRelease)
     {
@@ -202,17 +216,14 @@ bool MyScene::event(QEvent *event)
         if (keyEvent->key() == Qt::Key_Left)
         {
             this->setIsTowardLeft(false);
-            qDebug() << "On relâche sur la touche de gauche";
         }
         else if (keyEvent->key() == Qt::Key_Right)
         {
             this->setIsTowardRight(false);
-            qDebug() << "On relâche sur la touche de droite";
         }
         else if (keyEvent->key() == Qt::Key_Up)
         {
             this->setIsTowardUp(false);
-            qDebug() << "On relâche sur la touche du haut";
         }
     }
     return QGraphicsScene::event(event);
