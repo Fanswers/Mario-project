@@ -26,26 +26,24 @@ void MyScene::init()
     isTowardLeft = false;
     isTowardRight = false;
 
-    parseCsv();
-    display();
+    createMap();
+    qDebug() << map;
 }
 
-// parse csv
-void MyScene::parseCsv()
+// Lis le level.csv et le stock dans une liste de string
+void MyScene::createMap()
 {
     QFile file("../mario-project/lvl/level1.csv");
         if (!file.open(QIODevice::ReadOnly)) {
             qDebug() << file.errorString();
         }
 
-        QStringList wordList;
         while (!file.atEnd()) {
-            QByteArray line = file.readLine();
-            wordList.append(line.split(',').first());
-            qDebug() << line;
+            QString line = file.readLine();
+            line.remove(',');
+            line.remove("\r\n");
+            map.append(line);
         }
-
-        qDebug() << wordList;
 }
 
 // créer les tuiles
@@ -57,7 +55,7 @@ void MyScene::display()
             objRect -> setBrush(QBrush(QColor(0+((i+j)*4),0,0)));
             objRect -> setPen(Qt::NoPen);
             this -> addItem(objRect);
-            objRect -> setRect((i*objRectWidth)+objRectPos, j*objRectWidth,objRectWidth,objRectHeight);
+            objRect -> setRect((i*objRectWidth)+objRectPos, j*objRectWidth,objRectHeight,objRectWidth);
         }
     }
 }

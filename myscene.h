@@ -30,11 +30,13 @@ private:
     const int WIDTH = 480;
     const int HEIGHT = 240;
 
+    QStringList map;
+
     signed int objRectPos = 0;
 
     void init();
 
-    void parseCsv();
+    void createMap();
 
     void display();
 
