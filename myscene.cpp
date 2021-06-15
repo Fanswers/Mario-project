@@ -136,11 +136,25 @@ void MyScene::update()
         if (objRectPos < 100 && objRectPos >= 0)
         {
             objRectPos += 20;
+            marioSide = 1;
+            if (sautDispo)
+            {
+                marioSprite = 14;
+            } else {
+                marioSprite = 15;
+            }
         }
         else
         {
             objRectPos = 0;
             matricePos -= 1;
+            marioSide = 1;
+            if (sautDispo)
+            {
+                marioSprite = 14;
+            } else {
+                marioSprite = 15;
+            }
         }
     }
     if (isTowardRight && matricePos < mapWidth - 32 and isTowardLeft == false)
@@ -148,11 +162,24 @@ void MyScene::update()
         if (objRectPos > -100 && objRectPos <= 0)
         {
             objRectPos -= 20;
+            marioSide = 0;
+            if (sautDispo)
+            {
+                marioSprite = 0;
+            } else {
+                marioSprite = 6;
+            }
         }
         else
         {
             objRectPos = 0;
             matricePos += 1;
+            if (sautDispo)
+            {
+                marioSprite = 0;
+            } else {
+                marioSprite = 6;
+            }
         }
     }
 
@@ -168,7 +195,12 @@ void MyScene::update()
         tombe = false;
 
         // changement de l'image
-        marioSprite = 6;
+        if (marioSide == 0)
+        {
+            marioSprite = 6;
+        } else {
+            marioSprite = 15;
+        }
     }
     else
     {
@@ -185,7 +217,12 @@ void MyScene::update()
         sautDispo = true;
 
         // changement de l'image
-        marioSprite = 0;
+        if (marioSide == 0)
+        {
+            marioSprite = 0;
+        } else {
+            marioSprite = 14;
+        }
         solSous = true;
     }
     destroy();
