@@ -55,7 +55,7 @@ private:
     // est-on en train de se déplacer ?
     bool isTowardLeft;
     bool isTowardRight;
-    bool isTowardUp;
+    bool isTowardUp = false;
     bool saut = false;
     bool tombe = false;
     bool sautDispo = true;
